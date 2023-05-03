@@ -1,31 +1,38 @@
-Amazon Sagemaker Jupyter Notebook - Summary and Meta Summary Generation
-This Python code is designed to run in a Jupyter notebook in Amazon Sagemaker. It generates a summary and meta summary of a given book or text. The code is written in Python and uses the following libraries:
+Book Summarizer and Sentiment Analyzer
 
-boto3: The AWS SDK for Python, used to interact with AWS services such as Amazon S3 and Amazon Comprehend.
-nltk: The Natural Language Toolkit, used for tokenizing text.
-openai: The OpenAI API, used to generate summaries of text.
-Configuration and Dependencies
-Before running the code, you'll need to configure the following constants and dependencies:
+This Python script downloads a book from a URL, divides the book into smaller chunks, and generates summaries for each chunk using GPT-3.5-turbo from OpenAI. It then analyzes the sentiment and sentiment scores for each summary using Amazon Comprehend, detects named entities (names and places), and creates a meta summary for each group of 4 summaries. The final summary, sentiment analysis, and meta summaries are saved to an S3 bucket.
 
-bucket_name: The name of the S3 bucket where the input file is stored and where the output file and meta summaries will be uploaded.
-s3_filename: The name of the input file to be summarized.
-openai.api_key: Your OpenAI API key.
-comprehend: The AWS Comprehend client, used to detect sentiment and named entities in the text.
-In addition, you'll need to have the following dependencies installed:
+Prerequisites
 
-boto3
-nltk
-openai
-Running the Code
-Once you've configured the constants and dependencies, you can run the code in a Jupyter notebook in Amazon Sagemaker. The code performs the following steps:
+To run the script, you need:
 
-Reads the original file from S3.
-Tokenizes the text using the NLTK library.
-Splits the tokens into chunks of 750.
-Processes each chunk and generates a chunk summary.
-Analyzes sentiment and sentiment scores for each chunk summary.
-Detects named entities (names and places) for each chunk summary.
-Creates a meta summary for each group of 4 chunk summaries.
-Saves each meta summary as a separate text file and uploads it to S3.
-Saves the summary and meta summary data as a CSV file and uploads it to S3.
-Note that the code is specific to Amazon Sagemaker and may need to be adapted to run on other platforms.
+An AWS account with S3 and Comprehend services access
+The boto3, nltk, openai, pandas, matplotlib, and requests libraries installed
+
+Usage
+
+Set up your AWS credentials using the official AWS guide.
+Replace your_bucket_name with the name of the S3 bucket where you want to store the results.
+Replace your_api_key with your OpenAI API key.
+Optionally, change the book_url variable to the URL of the book or text file you want to summarize.
+
+How it works
+
+The script performs the following steps:
+
+Downloads the book from the provided URL and saves it to the specified S3 bucket.
+Tokenizes the book text using the NLTK library and divides it into smaller chunks.
+Processes each chunk by generating a summary using GPT-3.5-turbo from OpenAI.
+Analyzes the sentiment and sentiment scores for each summary using Amazon Comprehend.
+Detects named entities (names and places) in each summary using Amazon Comprehend.
+Creates a meta summary for each group of 4 summaries.
+Saves the summary, sentiment analysis, and meta summaries to the specified S3 bucket as text files and a CSV file.
+Visualizes the sentiment scores for each chunk using a line chart.
+
+Output
+
+The script generates:
+
+A summary and a meta summary for each group of 4 summaries, saved as separate text files in the S3 bucket.
+A CSV file containing the summary, sentiment analysis, and named entities detection for each chunk, saved in the S3 bucket.
+A line chart visualizing the sentiment scores for each chunk.
